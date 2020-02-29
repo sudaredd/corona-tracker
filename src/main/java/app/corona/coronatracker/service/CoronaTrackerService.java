@@ -4,6 +4,7 @@ import app.corona.coronatracker.model.CoronaStats;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +28,7 @@ public class CoronaTrackerService {
     private List<CoronaStats> coronaStatsList = new ArrayList<>();
 
     @PostConstruct
+    @Scheduled(cron = "0 45 6 ? * *")
     public void init() throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(CORONA_STATUS_URL))
