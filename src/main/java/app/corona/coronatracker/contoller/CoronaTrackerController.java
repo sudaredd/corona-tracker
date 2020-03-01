@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-public class HelloController {
+public class CoronaTrackerController {
     @Autowired
     private CoronaTrackerService coronaTrackerService;
     
@@ -19,8 +19,10 @@ public class HelloController {
     public String homePage(Model model) {
         List<CoronaStats> coronaStats = coronaTrackerService.latestCoronaStats();
         int totalReportedCases = coronaStats.stream().mapToInt(CoronaStats::getCount).sum();
+        int totalTodayReportedCases = coronaStats.stream().mapToInt(CoronaStats::getDiffFromPrevDay).sum();
         model.addAttribute("locationStats", coronaStats);
         model.addAttribute("totalReportedCases", totalReportedCases);
+        model.addAttribute("totalTodaysReportedCases", totalTodayReportedCases);
         return "home";
     }
 }
